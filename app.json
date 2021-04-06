@@ -1,0 +1,7 @@
+{
+  "name": "Node.js Websocket",
+  "description": "Simple websocket app that tracks your cursor coordinates",
+  "repository": "https://github.com/arseniyturin/WebSocket",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "express", "static"]
+}
