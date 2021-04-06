@@ -9,17 +9,18 @@ This app creates a persistent connection with the node server. Once you're conne
 `const ws = new WebSocket('ws://hostname:port')`
 
 ## Ways to Try
+### 1. [Click here](https://arseniy-websocket.herokuapp.com)
 
-### 1. Deploy to Heroku
+### 2. Deploy to Heroku
 This project could be easily deployed to Heroku. Fork it, create new projects in your Heroku account and deploy it from your GitHub account or just click a button below:
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-### 2. Run on Local Machine (macOS)
+### 3. Run on Local Machine (macOS)
 
 1. Install Node.js on your machine
 2. Open terminal, go to the project directory
-3. Type `> npm ws express`
+3. Type `> npm install ws express`
 4. Type `> node server.js`
 5. Open [http://localhost:3000](http://localhost:3000)
 
