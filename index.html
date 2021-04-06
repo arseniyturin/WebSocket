@@ -38,23 +38,25 @@
 
   <script type="text/javascript">
 
-    let HOST = location.origin.replace(/^http/, 'ws')
-    let ws = new WebSocket(HOST);
-    ws.binaryType = 'arraybuffer';
-    let message = document.getElementById('message');
-
+    const HOST = location.origin.replace(/^http/, 'ws')
+    const WS = new WebSocket(HOST);
+    const MESSAGE = document.getElementById('message');
+    WS.binaryType = 'arraybuffer';
     window.addEventListener('mousemove', trackMouse);
 
-    ws.onopen = (event) => {
+    // Client connected to server
+    WS.onopen = (event) => {
       console.log('Connected to Server');
     }
-
-    ws.onclose = (event) => {
+    // Server closed the connection or it's crashed
+    WS.onclose = (event) => {
       console.log('Connection is closed');
     }
-
-    ws.onmessage = (event) => {
+    // Receive message from server
+    WS.onmessage = (event) => {
+      // Data received in the proper format
       if (event.data instanceof ArrayBuffer) {
+        // Showing mouse coordinates to user
         let arr = new Uint16Array(event.data);
         message.innerHTML = `x: ${arr[0]}, y: ${arr[1]}`;
       }
@@ -65,8 +67,9 @@
       let coords = new Uint16Array(buffer);
       coords[0] = event.clientX;
       coords[1] = event.clientY;
-      if (ws.readyState == 1) {
-          ws.send(coords);
+      // If the connection is not closed
+      if (WS.readyState == 1) {
+          WS.send(coords);
       }
 
     }
