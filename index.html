@@ -37,33 +37,40 @@
   </body>
 
   <script type="text/javascript">
+
     let HOST = location.origin.replace(/^http/, 'ws')
     let ws = new WebSocket(HOST);
     ws.binaryType = 'arraybuffer';
     let message = document.getElementById('message');
 
-    window.addEventListener('click', function(event) {
-      ws.send('Click!');
-    });
-    window.addEventListener('mousemove', function(event){
+    window.addEventListener('mousemove', trackMouse);
+
+    ws.onopen = (event) => {
+      console.log('Connected to Server');
+    }
+
+    ws.onclose = (event) => {
+      console.log('Connection is closed');
+    }
+
+    ws.onmessage = (event) => {
+      if (event.data instanceof ArrayBuffer) {
+        let arr = new Uint16Array(event.data);
+        message.innerHTML = `x: ${arr[0]}, y: ${arr[1]}`;
+      }
+    }
+
+    function trackMouse(event) {
       let buffer = new ArrayBuffer(4);
       let coords = new Uint16Array(buffer);
       coords[0] = event.clientX;
       coords[1] = event.clientY;
-      ws.send(coords);
-    });
-
-    ws.onopen = (event) => {
-      console.log('Connected to Server');
-
-      ws.onmessage = (event) => {
-        if(event.data instanceof ArrayBuffer) {
-          let arr = new Uint16Array(event.data);
-          message.innerHTML = `x: ${arr[0]}, y: ${arr[1]}`;
-        }
+      if (ws.readyState == 1) {
+          ws.send(coords);
       }
 
     }
+
   </script>
 
 </html>
