@@ -38,6 +38,26 @@
 
   <script type="text/javascript">
 
+		const ICON_ON = '#00c000';
+		const ICON_OFF = '#e70303';
+
+		function statusIcon() {
+			const ICON = document.createElement('div');
+			document.body.appendChild(ICON);
+			window.ICON = ICON;
+			Object.assign(ICON.style, {
+				width: '8px',
+				height: '8px',
+				backgroundColor: '#fff',
+				position: 'absolute',
+				top: '15px',
+				left: '15px',
+				borderRadius: '10px',
+			});
+		}
+
+		statusIcon();
+
     const HOST = location.origin.replace(/^http/, 'ws')
     const WS = new WebSocket(HOST);
     const MESSAGE = document.getElementById('message');
@@ -46,11 +66,13 @@
 
     // Client connected to server
     WS.onopen = (event) => {
-      console.log('Connected to Server');
+      console.log('Connected to Server at: ', WS.url);
+			ICON.style.backgroundColor = ICON_ON;
     }
     // Server closed the connection or it's crashed
     WS.onclose = (event) => {
       console.log('Connection is closed');
+			ICON.style.backgroundColor = ICON_OFF;
     }
     // Receive message from server
     WS.onmessage = (event) => {
