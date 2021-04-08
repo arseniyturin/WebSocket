@@ -6,7 +6,7 @@
 	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Expires" content="0" />
-	<title>WebSocket - Simple Example</title>
+	<title>WebSocket</title>
   <style>
 		html, body {
 			margin: 0;
@@ -29,6 +29,9 @@
       text-align: center;
       border-radius: 4px;
     }
+		title {
+			color: green;
+		}
     </style>
   </head>
   <body>
@@ -40,11 +43,14 @@
 
 		const ICON_ON = '#00c000';
 		const ICON_OFF = '#e70303';
+		const TITLE = document.getElementsByTagName('title')[0];
+		const ICON = document.createElement('div');
+		const HOST = location.origin.replace(/^http/, 'ws')
+    const WS = new WebSocket(HOST);
+    const MESSAGE = document.getElementById('message');
 
 		function statusIcon() {
-			const ICON = document.createElement('div');
 			document.body.appendChild(ICON);
-			window.ICON = ICON;
 			Object.assign(ICON.style, {
 				width: '8px',
 				height: '8px',
@@ -58,21 +64,23 @@
 
 		statusIcon();
 
-    const HOST = location.origin.replace(/^http/, 'ws')
-    const WS = new WebSocket(HOST);
-    const MESSAGE = document.getElementById('message');
+
     WS.binaryType = 'arraybuffer';
     window.addEventListener('mousemove', trackMouse);
 
     // Client connected to server
     WS.onopen = (event) => {
-      console.log('Connected to Server at: ', WS.url);
+      console.log('Connected to Server at:', WS.url);
 			ICON.style.backgroundColor = ICON_ON;
+			TITLE.text = 'WebSocket - ON';
+			let START = Date.now();
+			window.START = START;
     }
     // Server closed the connection or it's crashed
     WS.onclose = (event) => {
-      console.log('Connection is closed');
+      console.log('Connection is closed after',Math.round((Date.now()-START)/1000),'seconds');
 			ICON.style.backgroundColor = ICON_OFF;
+			TITLE.text = 'WebSocket - OFF';
     }
     // Receive message from server
     WS.onmessage = (event) => {
